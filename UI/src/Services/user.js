@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// export const axiosRequest = axios.create({
-//   baseURL: "http://localhost:3000",
-// });
+export const axiosRequest = axios.create({
+  baseURL: "http://localhost:3000",
+});
 
 export const signup = async (name, email, password) => {
   try {
-    const {data}  = await axios.post(
-      "http://localhost:3000/api/users/register",
+    const {data}  = await axiosRequest.post(
+      "/api/users/register",
       {
         name,
         email,
@@ -26,7 +26,7 @@ export const signup = async (name, email, password) => {
 
 export const login = async (email, password) => {
   try {
-    const data = await axios.post("http://localhost:3000/api/users/login", {
+    const data = await axiosRequest.post("/api/users/login", {
       email,
       password,
     });

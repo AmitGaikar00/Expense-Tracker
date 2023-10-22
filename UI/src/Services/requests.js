@@ -1,5 +1,5 @@
-// import { axiosRequest } from "./user";
-import axios from "axios";
+import { axiosRequest } from "./user";
+// import axios from "axios";
 //   getAllExpenses,
 //   getExpense,
 //   createExpense,
@@ -8,7 +8,7 @@ import axios from "axios";
 
 export const getAllExpenses = async () => {
   try {
-    const { data } = await axios.get("http://localhost:3000/api/expenses");
+    const { data } = await axiosRequest.get("/api/expenses");
     return data;
   } catch (error) {
     return error;
@@ -20,8 +20,8 @@ export const getAllExpenses = async () => {
 
 export const getExpense = async (id) => {
   try {
-    const { data } = await axios.get(
-      `http://localhost:3000/api/expenses/${id}`
+    const { data } = await axiosRequest.get(
+      `/api/expenses/${id}`
     );
     return data;
   } catch (error) {
@@ -34,7 +34,7 @@ export const getExpense = async (id) => {
 
 export const createExpense = async ({ name, category, amount }) => {
   try {
-    const { data } = await axios.post("http://localhost:3000/api/expenses", {
+    const { data } = await axiosRequest.post("/api/expenses", {
       name,
       category,
       amount,
@@ -50,8 +50,8 @@ export const createExpense = async ({ name, category, amount }) => {
 
 export const updateExpense = async ({ name, category, amount, id }) => {
   try {
-    const { data } = await axios.put(
-      `http://localhost:3000/api/expenses/${id}`,
+    const { data } = await axiosRequest.put(
+      `/api/expenses/${id}`,
       {
         name,
         category,
@@ -69,8 +69,8 @@ export const updateExpense = async ({ name, category, amount, id }) => {
 
 export const deleteExpense = async (id) => {
   try {
-    const { data } = await axios.delete(
-      `http://localhost:3000/api/expenses/${id}`
+    const { data } = await axiosRequest.delete(
+      `/api/expenses/${id}`
     );
     return data;
   } catch (error) {

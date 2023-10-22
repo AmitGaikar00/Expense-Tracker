@@ -18,7 +18,15 @@ function AddExpense() {
     toast.success("Expense has been updated");
   }
 
-  const [data, setExpenseData] = useState({});
+  const [data, setExpenseData] = useState({
+    _id: "",
+    name: "",
+    category: "",
+    amount: "",
+    createdAt: "",
+    updatedAt: "",
+    __v: 0,
+  });
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -31,10 +39,10 @@ function AddExpense() {
     try {
       const response = getExpense(expenseId);
       // console.log(response);
-      response.then(result =>{
-        console.log(result)
-        setExpenseData({...result});
-      })
+      response.then((result) => {
+        console.log(result);
+        setExpenseData({ ...result });
+      });
     } catch (error) {
       console.log(error);
     }

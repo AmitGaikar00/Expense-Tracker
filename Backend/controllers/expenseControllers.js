@@ -20,7 +20,16 @@ const createExpense = async (req, res, next) => {
 const updateExpense = async (req, res, next) => {
   try {
     const { name, category, amount } = req.body;
-    const expense = await Expense.findOne({ slug: req.params.slug });
+    const update = {
+      name: name,
+      category: category,
+      amount: amount,
+    };
+    const expense = await Expense.findOneAndUpdate(
+      { slug: req.params.slug },
+      update,
+      { new: true }
+    );
 
     if (!expense) {
       const error = new Error("Expense not found");
@@ -28,9 +37,9 @@ const updateExpense = async (req, res, next) => {
       return;
     }
 
-    expense.name = name || expense.name;
-    expense.category = category || expense.category;
-    expense.amount = amount || expense.amount;
+    // expense.name = name || expense.name;
+    // expense.category = category || expense.category;
+    // expense.amount = amount || expense.amount;
 
     const updatedExpense = await expense.save();
     return res.json(updatedExpense);
