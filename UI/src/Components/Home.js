@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import Expenses from "./Expenses";
+import ExpensesSkeleton from "./ExpensesSkeleton";
 import { getAllExpenses } from "../Services/requests";
 
 function Home() {
   const navigate = useNavigate();
   const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
 
   function fetchExpenses() {
+    // setLoading(false);
     const response = getAllExpenses();
     response.then((result) => {
       setList([...result]);
+      setLoading(false);
       // console.log(result);
     });
   }
@@ -43,7 +48,11 @@ function Home() {
       </h1>
 
       {/* // expnese section  */}
-      <Expenses list={list} fetchExpenses={fetchExpenses}/>
+      {loading ? (
+        <ExpensesSkeleton />
+      ) : (
+        <Expenses list={list} fetchExpenses={fetchExpenses} />
+      )}
 
       {/* <ExpenseCard /> */}
     </section>
