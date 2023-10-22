@@ -10,9 +10,8 @@ function Home() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-
   function fetchExpenses() {
-    // setLoading(false);
+    // setLoading(true);
     const response = getAllExpenses();
     response.then((result) => {
       setList([...result]);
@@ -26,7 +25,6 @@ function Home() {
     if (!user) {
       navigate("/login");
     }
-
     fetchExpenses();
   }, [navigate, list]);
 
@@ -39,7 +37,7 @@ function Home() {
     <section className="container mx-auto px-5 py-4 w-full">
       <button
         onClick={handleClick}
-        className="fixed bottom-10 right-10 text-5xl text-primary hover:text-black transition-all duration-200"
+        className="fixed bottom-10 right-10 text-5xl text-primary hover:text-black transition-all duration-200 z-500"
       >
         <BsPlusCircleFill />
       </button>

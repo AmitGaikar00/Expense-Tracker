@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { BsPencil } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
+import { FaSortAlphaUp, FaSortAlphaDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { deleteExpense } from "../Services/requests";
 import toast from "react-hot-toast";
 
 function Expenses({ list, fetchExpenses }) {
+  const [data, setData] = useState(list);
   const navigate = useNavigate();
 
   function handleDelete(expense) {
@@ -31,6 +33,21 @@ function Expenses({ list, fetchExpenses }) {
     navigate(`/expense/${id}`);
   }
 
+  const handleAmountAscending = () => {
+    const sortedData = data.sort(function (a, b) {
+      return a.amount - b.amount;
+    });
+
+    setData([...sortedData]);
+  };
+  const handleAmountDescending = () => {
+    const sortedData = data.sort(function (a, b) {
+      return b.amount - a.amount;
+    });
+
+    setData([...sortedData]);
+  };
+
   return (
     <section className="container overflow-x-scroll lg:overflow-auto">
       <table className="min-w-full text-left text-sm font-light">
@@ -45,10 +62,20 @@ function Expenses({ list, fetchExpenses }) {
             <th scope="col" className="px-6 py-4">
               Category
             </th>
-            <th scope="col" className="px-6 py-4">
-              Amount (Rs.)
+            <th scope="col" className="px-6 py-4 ">
+              <div className="flex  items-center gap-2">
+                Amount (Rs.)
+                <FaSortAlphaUp
+                  className="text-lg cursor-pointer"
+                  onClick={handleAmountAscending}
+                />
+                <FaSortAlphaDown
+                  className="text-lg cursor-pointer"
+                  onClick={handleAmountDescending}
+                />
+              </div>
             </th>
-            <th scope="col" className="px-6 py-4">
+            <th scope="col" className="px-6 py-4 ">
               Date
             </th>
             <th scope="col" className="px-6 py-4">
@@ -56,7 +83,7 @@ function Expenses({ list, fetchExpenses }) {
             </th>
           </tr>
         </thead>
-        {list.map((expense, index) => (
+        {data.map((expense, index) => (
           <tbody key={index}>
             <tr className="border-b ">
               <td className="whitespace-nowrap px-4 py-4 font-medium">

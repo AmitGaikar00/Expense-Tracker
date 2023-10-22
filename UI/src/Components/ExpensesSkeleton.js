@@ -14,7 +14,6 @@ function Expenses() {
             <th scope="col" className="px-6 py-4 bg-slate-300"></th>
           </tr>
         </thead>
-        <br />
         {[...Array(10)].map((index) => (
           <tbody key={index}>
             <tr className="border-b bg-slate-300">
