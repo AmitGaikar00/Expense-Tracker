@@ -2,59 +2,33 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import Expenses from "./Expenses";
-import AddExpense from "./AddExpense";
+import { getAllExpenses } from "../Services/requests";
 
 function Home() {
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem("user"));
-  //   if (!user) {
-  //     navigate("/login");
-  //   }
-  // }, []);
+  const [list, setList] = useState([]);
+
+  function fetchExpenses() {
+    const response = getAllExpenses();
+    response.then((result) => {
+      setList([...result]);
+      // console.log(result);
+    });
+  }
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) {
+      navigate("/login");
+    }
+
+    fetchExpenses();
+  }, [navigate, list]);
 
   function handleClick(e) {
     e.preventDefault();
     navigate("/AddExpense");
   }
-  const list = [
-    {
-      id: "1",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-    {
-      id: "2",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-    {
-      id: "3",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-    {
-      id: "4",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-    {
-      id: "5",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-    {
-      id: "6",
-      name: "shopping billl",
-      amount: 1324324,
-      category: "grocery",
-    },
-  ];
 
   return (
     <section className="container mx-auto px-5 py-4 w-full">
@@ -69,7 +43,7 @@ function Home() {
       </h1>
 
       {/* // expnese section  */}
-      <Expenses list={list} />
+      <Expenses list={list} fetchExpenses={fetchExpenses}/>
 
       {/* <ExpenseCard /> */}
     </section>

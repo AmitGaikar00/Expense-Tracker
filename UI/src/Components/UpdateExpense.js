@@ -1,15 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { updateExpense, getExpense } from "../Services/requests";
+import toast from "react-hot-toast";
 
 function AddExpense() {
   const navigate = useNavigate();
-  function handleSubmit(e) {
+
+  function handleOK(e) {
     e.preventDefault();
+    navigate(-1);
+  }
+  function handleUpdate(e) {
+    e.preventDefault();
+    const response = updateExpense({ ...data, id: expenseId });
+    console.log(response);
     navigate("/");
+    toast.success("Expense has been updated");
   }
 
-  useEffect(() => {});
+  const [data, setExpenseData] = useState({});
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setExpenseData({ ...data, [id]: value });
+  };
+
   const { expenseId } = useParams();
+
+  useEffect(() => {
+    try {
+      const response = getExpense(expenseId);
+      // console.log(response);
+      response.then(result =>{
+        console.log(result)
+        setExpenseData({...result});
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }, [expenseId]);
+
   //   console.log(expenseId);
   return (
     <section className="container mx-auto px-5 py-10">
@@ -17,61 +47,78 @@ function AddExpense() {
         <h1 className="font-roboto text-2xl font-bold text-center text-dark-hard mb-8">
           Update Expense
         </h1>
-        <form onSubmit={handleSubmit}>
-          <div className="flex flex-col mb-6 w-full">
-            <label
-              htmlFor="Name"
-              className="text-[#5a7184] font-semibold block absolute pl-5"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="Name"
-              placeholder="Enter Expense Name"
-              className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
-            />
-          </div>
-          <div className="flex flex-col mb-6 w-full">
-            <label
-              htmlFor="amount"
-              className="text-[#5a7184] font-semibold block absolute pl-5"
-            >
-              Amount
-            </label>
-            <input
-              type="number"
-              id="amount"
-              placeholder="Enter amount"
-              className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
-            />
-          </div>
-          <div className="flex flex-col mb-6 w-full">
-            <label
-              htmlFor="category"
-              className="text-[#5a7184] font-semibold block absolute pl-5"
-            >
-              Category
-            </label>
-            <select
-              type="select"
-              id="category"
-              placeholder="Select Category"
-              className="text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
-            >
-              <option defaultValue>Select Category</option>
-              <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-              <option value="GROCERY">GROCERY</option>
-              <option value="RESTAURANT">RESTAURANT</option>
-              <option value="UTILITY">UTILITY</option>
-              <option value="MISCELLANEOUS">MISCELLANEOUS</option>
-            </select>
-          </div>
+        {/* <form> */}
+        <div className="flex flex-col mb-6 w-full">
+          <label
+            htmlFor="Name"
+            className="text-[#5a7184] font-semibold block absolute pl-5"
+          >
+            Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={data?.name}
+            onChange={handleChange}
+            placeholder="Enter Expense Name"
+            className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
+          />
+        </div>
+        <div className="flex flex-col mb-6 w-full">
+          <label
+            htmlFor="amount"
+            className="text-[#5a7184] font-semibold block absolute pl-5"
+          >
+            Amount
+          </label>
+          <input
+            type="text"
+            id="amount"
+            value={data?.amount}
+            onChange={handleChange}
+            placeholder="Enter amount"
+            className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
+          />
+        </div>
+        <div className="flex flex-col mb-6 w-full">
+          <label
+            htmlFor="category"
+            className="text-[#5a7184] font-semibold block absolute pl-5"
+          >
+            Category
+          </label>
+          <select
+            type="select"
+            id="category"
+            value={data?.category}
+            onChange={handleChange}
+            placeholder="Select Category"
+            className="text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
+          >
+            <option defaultValue>Select Category</option>
+            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+            <option value="GROCERY">GROCERY</option>
+            <option value="RESTAURANT">RESTAURANT</option>
+            <option value="UTILITY">UTILITY</option>
+            <option value="MISCELLANEOUS">MISCELLANEOUS</option>
+          </select>
+        </div>
 
-          <button className="bg-black text-white font-bold text-lg py-4 px-8 w-full rounded-lg my-6 border-black border-2 hover:bg-white hover:text-black transition-all duration-200">
+        <div className="flex justify-around">
+          <button
+            onClick={handleOK}
+            className="bg-white text-blue-500 font-bold text-lg py-4 px-8 rounded-lg my-6 border-blue-500 border-2 hover:bg-blue-500 hover:text-white transition-all duration-200"
+          >
+            ok
+          </button>
+          <button
+            onClick={handleUpdate}
+            className="bg-black text-white font-bold text-lg py-4 px-8  rounded-lg my-6 border-black border-2 hover:bg-white hover:text-black transition-all duration-200"
+          >
             Update
           </button>
-        </form>
+        </div>
+        {/* </form> */}
       </div>
     </section>
   );

@@ -40,7 +40,7 @@ const loginUser = async (req, res, next) => {
     }
 
     if (await user.comparePassword(password)) {
-      return res.status(201).json({
+      return res.status(200).json({
         _id: user._id,
         name: user.name,
         email: user.email,

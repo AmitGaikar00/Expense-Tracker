@@ -8,11 +8,14 @@ function Navbar() {
   const [user, setUser] = useState(null);
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-  }, []);
+    if (user) {
+      setUser(user);
+    }
+  }, [navigate]);
 
   const handleSubmit = () => {
     localStorage.removeItem("user");
+    setUser(null);
     toast.success("User has Logged out");
     navigate("/login");
   };
@@ -27,7 +30,7 @@ function Navbar() {
           App
         </h1>
 
-        {!user && (
+        {user && (
           <button
             onClick={handleSubmit}
             className="text-sm md:text-base border-2 border-blue-500 md:px-7 px-5 py-1.5 rounded-full text-blue-500 font-semibold hover:bg-blue-500 hover:text-white transition-all duration-300"

@@ -1,6 +1,5 @@
 import Expense from "../models/Expense";
 
-
 const createExpense = async (req, res, next) => {
   try {
     const { name, category, amount } = req.body;
@@ -41,8 +40,10 @@ const updateExpense = async (req, res, next) => {
 };
 
 const deleteExpense = async (req, res, next) => {
+  const id = req.params.slug;
   try {
-    const expense = await Expense.findOneAndDelete({ slug: req.params.slug });
+    // const expense = await Expense.findOneAndDelete({ slug: req.params.slug });
+    const expense = await Expense.findByIdAndDelete(id);
 
     if (!expense) {
       const error = new Error("Expense not found");
@@ -57,8 +58,10 @@ const deleteExpense = async (req, res, next) => {
 };
 
 const getExpense = async (req, res, next) => {
+  const id = req.params.slug;
   try {
-    const expense = await Expense.findOne({ slug: req.params.slug });
+    // const expense = await Expense.findOne({ slug: req.params.slug });
+    const expense = await Expense.findById(id);
 
     if (!expense) {
       const error = new Error("Expense not found");

@@ -1,62 +1,82 @@
-import { axiosRequest } from "./user";
+// import { axiosRequest } from "./user";
+import axios from "axios";
+//   getAllExpenses,
+//   getExpense,
+//   createExpense,
+//   updateExpense,
+//   deleteExpense,
 
-
-export const getExpenses = async ({ name, email, password }) => {
+export const getAllExpenses = async () => {
   try {
-    const { data } = await axiosRequest.get("/api/users/register", {
+    const { data } = await axios.get("http://localhost:3000/api/expenses");
+    return data;
+  } catch (error) {
+    return error;
+    // if (error.response && error.response.data.message)
+    //   throw new Error(error.response.data.message);
+    // throw new Error(error.message);
+  }
+};
+
+export const getExpense = async (id) => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/expenses/${id}`
+    );
+    return data;
+  } catch (error) {
+    return error;
+    // if (error.response && error.response.data.message)
+    //   throw new Error(error.response.data.message);
+    // throw new Error(error.message);
+  }
+};
+
+export const createExpense = async ({ name, category, amount }) => {
+  try {
+    const { data } = await axios.post("http://localhost:3000/api/expenses", {
       name,
-      email,
-      password,
+      category,
+      amount,
     });
     return data;
   } catch (error) {
-    if (error.response && error.response.data.message)
-      throw new Error(error.response.data.message);
-    throw new Error(error.message);
+    return error;
+    // if (error.response && error.response.data.message)
+    //   throw new Error(error.response.data.message);
+    // throw new Error(error.message);
   }
 };
 
-export const getExpense = async ({ email, password }) => {
+export const updateExpense = async ({ name, category, amount, id }) => {
   try {
-    const { data } = await axiosRequest.get("/api/users/login", {
-      email,
-      password,
-    });
+    const { data } = await axios.put(
+      `http://localhost:3000/api/expenses/${id}`,
+      {
+        name,
+        category,
+        amount,
+      }
+    );
     return data;
   } catch (error) {
-    if (error.response && error.response.data.message)
-      throw new Error(error.response.data.message);
-    throw new Error(error.message);
+    return error;
+    // if (error.response && error.response.data.message)
+    //   throw new Error(error.response.data.message);
+    // throw new Error(error.message);
   }
 };
 
-
-export const deleteExpenses = async ({ name, email, password }) => {
-    try {
-      const { data } = await axiosRequest.delete("/api/users/register", {
-        name,
-        email,
-        password,
-      });
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message)
-        throw new Error(error.response.data.message);
-      throw new Error(error.message);
-    }
-  };
-
-  export const updateExpenses = async ({ name, email, password }) => {
-    try {
-      const { data } = await axiosRequest.put("/api/users/register", {
-        name,
-        email,
-        password,
-      });
-      return data;
-    } catch (error) {
-      if (error.response && error.response.data.message)
-        throw new Error(error.response.data.message);
-      throw new Error(error.message);
-    }
-  };
+export const deleteExpense = async (id) => {
+  try {
+    const { data } = await axios.delete(
+      `http://localhost:3000/api/expenses/${id}`
+    );
+    return data;
+  } catch (error) {
+    return error;
+    // if (error.response && error.response.data.message)
+    //   throw new Error(error.response.data.message);
+    // throw new Error(error.message);
+  }
+};

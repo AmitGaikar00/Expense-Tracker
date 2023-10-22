@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import {login } from '../Services/user'
+import { login } from "../Services/user";
 import toast from "react-hot-toast";
-
 
 const Login = () => {
   const navigate = useNavigate();
@@ -13,7 +12,7 @@ const Login = () => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   const {
     register,
@@ -29,16 +28,22 @@ const Login = () => {
 
   const submitHandler = (data) => {
     const { email, password } = data;
-    // mutate({ email, password });
-    try{
-      const response = login(email , password);
-      localStorage.setItem("user", JSON.stringify(response));
-      console.log(response);
-    }catch(error){
-      toast.error(error.message);
+    try {
+      login(email, password).then((result) => {
+        
+        if (result?.status === 200) {
+          localStorage.setItem("user", JSON.stringify(result));
+          console.log("successfully logged in ", result.data);
+          navigate("/");
+          toast.success("logged in successfully");
+        } else {
+          console.log("failed with ", result.response.data.message);
+          toast.error(result.response.data.message);
+        }
+      });
+    } catch (error) {
       console.log(error);
     }
-
   };
 
   return (

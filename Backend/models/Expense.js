@@ -4,7 +4,7 @@ const ExpenseSchema = new Schema(
   {
     name: { type: String, required: true },
     category: { type: String, required: true },
-    amount: { type: Number, required: true},
+    amount: { type: String, required: true},
   },
   { timestamps: true }
 );

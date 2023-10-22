@@ -1,13 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import toast from 'react-hot-toast'
+import toast from "react-hot-toast";
+import { createExpense } from "../Services/requests";
 
 function AddExpense() {
   const navigate = useNavigate();
+  const [data, setExpenseData] = useState({
+    name: "",
+    category: "",
+    amount: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setExpenseData({ ...data, [id]: value });
+  };
+
   function handleSubmit(e) {
-    e.preventDefault();
-    toast.success("Expense has been added")
-    navigate("/");
+    // e.preventDefault();
+    const response = createExpense(data);
+    console.log(response);
+    navigate("/" , {replace:true });
+    toast.success("Expense has been added");
   }
 
   return (
@@ -26,8 +40,10 @@ function AddExpense() {
             </label>
             <input
               type="text"
-              id="Name"
+              id="name"
               placeholder="Enter Expense Name"
+              value={data.name}
+              onChange={handleChange}
               className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
             />
           </div>
@@ -39,8 +55,10 @@ function AddExpense() {
               Amount
             </label>
             <input
-              type="number"
+              type="text"
               id="amount"
+              value={data.amount}
+              onChange={handleChange}
               placeholder="Enter amount"
               className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
             />
@@ -55,13 +73,17 @@ function AddExpense() {
             <select
               type="select"
               id="category"
+              value={data.category}
+              onChange={handleChange}
               placeholder="Select Category"
               className="text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
             >
               <option defaultValue>Select Category</option>
-              <option value="saab">Saab</option>
-              <option value="mercedes">Mercedes</option>
-              <option value="audi">Audi</option>
+              <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+              <option value="GROCERY">GROCERY</option>
+              <option value="RESTAURANT">RESTAURANT</option>
+              <option value="UTILITY">UTILITY</option>
+              <option value="MISCELLANEOUS">MISCELLANEOUS</option>
             </select>
           </div>
 
