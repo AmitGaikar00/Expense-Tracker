@@ -16,3 +16,6 @@ body {
 
 
 
+/* .my-overriding-class{
+  @apply  hover:border-gray-200 hover:border-2
+} */

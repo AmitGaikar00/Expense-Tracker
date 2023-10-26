@@ -12,11 +12,11 @@ function Home() {
 
   function fetchExpenses() {
     // setLoading(true);
+    console.log("fetchExpenses run");
     const response = getAllExpenses();
     response.then((result) => {
       setList([...result]);
       setLoading(false);
-      // console.log(result);
     });
   }
 
@@ -26,7 +26,7 @@ function Home() {
       navigate("/login");
     }
     fetchExpenses();
-  }, [navigate, list]);
+  }, [navigate]);
 
   function handleClick(e) {
     e.preventDefault();
@@ -46,11 +46,7 @@ function Home() {
       </h1>
 
       {/* // expnese section  */}
-      {loading ? (
-        <ExpensesSkeleton />
-      ) : (
-        <Expenses list={list} fetchExpenses={fetchExpenses} />
-      )}
+      {loading ? <ExpensesSkeleton /> : <Expenses key="key" list={list} />}
 
       {/* <ExpenseCard /> */}
     </section>

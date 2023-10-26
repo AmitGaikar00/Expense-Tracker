@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { BsPencil } from "react-icons/bs";
-import { AiOutlineDelete } from "react-icons/ai";
 import { FaSortAlphaUp, FaSortAlphaDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { deleteExpense } from "../Services/requests";
 import toast from "react-hot-toast";
+import { BsPencil } from "react-icons/bs";
+import { AiOutlineDelete } from "react-icons/ai";
 
-function Expenses({ list, fetchExpenses }) {
+function Expenses({ list }) {
   const [data, setData] = useState(list);
   const navigate = useNavigate();
 
@@ -17,8 +17,7 @@ function Expenses({ list, fetchExpenses }) {
     try {
       const response = deleteExpense(id);
       response.then(() => {
-        navigate("/");
-        fetchExpenses();
+        navigate("/"  , {replace:true });
       });
 
       toast.success("Expense deleted successfully");
@@ -53,16 +52,16 @@ function Expenses({ list, fetchExpenses }) {
       <table className="min-w-full text-left text-sm font-light">
         <thead className="border-b font-medium dark:border-neutral-500">
           <tr>
-            <th scope="col" className="px-4 py-4">
+            <th scope="col" className="px-4 py-4 hover:bg-gray-100">
               #
             </th>
-            <th scope="col" className="px-6 py-4">
+            <th scope="col" className="px-6 py-4 hover:bg-gray-100">
               Name
             </th>
-            <th scope="col" className="px-6 py-4">
+            <th scope="col" className="px-6 py-4 hover:bg-gray-100">
               Category
             </th>
-            <th scope="col" className="px-6 py-4 ">
+            <th scope="col" className="px-6 py-4 hover:bg-gray-100">
               <div className="flex  items-center gap-2">
                 Amount (Rs.)
                 <FaSortAlphaUp
@@ -75,41 +74,40 @@ function Expenses({ list, fetchExpenses }) {
                 />
               </div>
             </th>
-            <th scope="col" className="px-6 py-4 ">
+            <th scope="col" className="px-6 py-4 hover:bg-gray-100">
               Date
             </th>
-            <th scope="col" className="px-6 py-4">
+            <th scope="col" className="px-6 py-4 hover:bg-gray-100">
               Options
             </th>
           </tr>
         </thead>
+
         {data.map((expense, index) => (
-          <tbody key={index}>
+          <tbody key={expense?._id}>
             <tr className="border-b ">
-              <td className="whitespace-nowrap px-4 py-4 font-medium">
+              <td className="whitespace-nowrap px-4 py-4 font-medium hover:bg-gray-100">
                 {index + 1}
               </td>
-              <td className="whitespace-nowrap px-6 py-4">{expense?.name}</td>
-              <td className="whitespace-nowrap px-6 py-4">
+              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
+                {expense?.name}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
                 {expense?.category}
               </td>
-              <td className="whitespace-nowrap px-6 py-4 font-bold">
+              <td className="whitespace-nowrap px-6 py-4 font-bold hover:bg-gray-100">
                 {expense?.amount}
               </td>
-              <td className=" px-6 py-4">{expense?.createdAt}</td>
-              <td className="whitespace-nowrap px-6 py-4">
+              <td className=" px-6 py-4 hover:bg-gray-100">
+                {expense?.createdAt}
+              </td>
+              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
                 <div className="flex gap-5 ">
                   <button className="" onClick={() => handleDelete(expense)}>
-                    <AiOutlineDelete
-                      // onClick={() => handleDelete(expense)}
-                      className="text-xl text-primary hover:text-black cursor-pointer"
-                    />
+                    <AiOutlineDelete className="text-xl text-primary hover:text-black cursor-pointer" />
                   </button>
                   <button onClick={() => handleView(expense)}>
-                    <BsPencil
-                      // onClick={() => handleView(expense)}
-                      className="text-xl text-black hover:text-primary cursor-pointer"
-                    />
+                    <BsPencil className="text-xl text-black hover:text-primary cursor-pointer" />
                   </button>
                 </div>
               </td>
