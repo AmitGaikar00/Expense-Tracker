@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import Expenses from "./Expenses";
@@ -34,11 +34,7 @@ function Home() {
       </h1>
 
       {/* // expnese section  */}
-      {state.size() === 0 ? (
-        <ExpensesSkeleton />
-      ) : (
-        <Expenses key="key" list={state} />
-      )}
+      {state.length === 0 ? <ExpensesSkeleton /> : <Expenses />}
 
       {/* <ExpenseCard /> */}
     </section>

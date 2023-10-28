@@ -7,29 +7,33 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { useExpense } from "../context/ContextProvider";
 import { deleteExpense } from "../Services/requests";
 
-function Expenses({ list }) {
+function Expenses() {
+  const navigate = useNavigate();
   const { state, dispatch } = useExpense();
+  const [data, setData] = useState(state);
+  // console.log(state);
 
   useEffect(() => {
     setData(state);
   }, [state]);
 
-  const [data, setData] = useState(list);
-  const navigate = useNavigate();
-
   function handleDelete(expense) {
     console.log("delete :", expense);
+    const id = expense._id;
 
-    deleteExpense(expense?.id).then(() => {
+    const response = deleteExpense(id);
+
+    response.then((result) => {
       dispatch({
         type: "DELETE_EXPENSE",
         payload: expense,
       });
       toast.success("Expense deleted successfully");
+      console.log(result);
     });
   }
   function handleView(expense) {
-    const id = expense?.id;
+    const id = expense?._id;
     console.log("view:", id);
     navigate(`/expense/${id}`);
   }

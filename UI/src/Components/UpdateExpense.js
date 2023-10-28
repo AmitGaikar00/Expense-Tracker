@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useExpense } from "../context/ContextProvider";
@@ -12,13 +12,14 @@ function AddExpense() {
     e.preventDefault();
     navigate(-1);
   }
+
   function handleUpdate(e) {
     e.preventDefault();
 
-    updateExpense({ ...data, id: expenseId }).then(() => {
+    updateExpense(data).then((result) => {
       dispatch({
         type: "UPDATE_EXPENSE",
-        payload: data,
+        payload: result,
       });
 
       navigate("/");
@@ -30,6 +31,10 @@ function AddExpense() {
   const [data, setExpenseData] = useState(
     state.find((e) => e._id === expenseId)
   );
+
+  useEffect(() => {
+    setExpenseData(state.find((e) => e._id === expenseId));
+  }, [expenseId , state]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
