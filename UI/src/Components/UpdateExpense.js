@@ -14,14 +14,28 @@ function AddExpense() {
   }
 
   function handleUpdate(e) {
+    // console.log("update", data);
     e.preventDefault();
 
-    updateExpense(data).then((result) => {
+    const updateData = {
+      expenseName: data.expenseName,
+      expenseCategory: data.expenseCategory,
+      expenseAmount: data.expenseAmount,
+      attributes: [
+        {
+          attribute_name: "to",
+          attribute_value: "test_attribute_value",
+        },
+      ],
+    };
+
+    updateExpense(updateData, expenseId).then(() => {
       dispatch({
         type: "UPDATE_EXPENSE",
-        payload: result,
+        payload: data,
       });
 
+      // console.log("updateed", state);
       navigate("/");
       toast.success("Expense has been updated");
     });
@@ -34,11 +48,11 @@ function AddExpense() {
 
   useEffect(() => {
     setExpenseData(state.find((e) => e.id === expenseId));
-  }, [expenseId , state]);
+  }, [expenseId]);
 
   const handleChange = (e) => {
-    const { id, value } = e.target;
-    setExpenseData({ ...data, [id]: value });
+    const { name, value } = e.target;
+    setExpenseData({ ...data, [name]: value });
   };
 
   return (
@@ -57,8 +71,8 @@ function AddExpense() {
           </label>
           <input
             type="text"
-            id="name"
-            value={data?.name}
+            name="expenseName"
+            value={data?.expenseName || ""}
             onChange={handleChange}
             placeholder="Enter Expense Name"
             className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
@@ -73,8 +87,8 @@ function AddExpense() {
           </label>
           <input
             type="text"
-            id="amount"
-            value={data?.amount}
+            name="expenseAmount"
+            value={data?.expenseAmount}
             onChange={handleChange}
             placeholder="Enter amount"
             className="placeholder:text-[#959ead] text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"
@@ -89,8 +103,8 @@ function AddExpense() {
           </label>
           <select
             type="select"
-            id="category"
-            value={data?.category}
+            name="expenseCategory"
+            value={data?.expenseCategory}
             onChange={handleChange}
             placeholder="Select Category"
             className="text-dark-hard mt-3 rounded-lg px-5 py-4 font-semibold block outline-none border"

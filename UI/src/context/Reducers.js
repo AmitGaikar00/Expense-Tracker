@@ -5,9 +5,8 @@ export const expenseReducer = (expenses, action) => {
     case "ADD_EXPENSE":
       return [...expenses, { ...action.payload }];
     case "UPDATE_EXPENSE":
-      return expenses.map((e) =>
-        e.id === action.payload.id ? action.payload : e
-      );
+      return [...expenses.map((e) =>
+        e.id === action.payload.id ? action.payload : e)]
     case "DELETE_EXPENSE":
       return expenses.filter((e) => e.id !== action.payload.id);
     default:

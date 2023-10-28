@@ -50,12 +50,12 @@ export const createExpense = async ({ name, category, amount }) => {
   }
 };
 
-export const updateExpense = async ({ name, category, amount, id }) => {
+export const updateExpense = async (updateData, id) => {
   try {
-    const { data } = await axiosRequest.put(`/api/expenses/${id}`, {
-      name,
-      category,
-      amount,
+    const { data } = await axios.put(`/api/expense/${id}`, updateData, {
+      headers: {
+        Authorization: `Bearer_${token.data.jwtToken}`,
+      },
     });
     return data;
   } catch (error) {

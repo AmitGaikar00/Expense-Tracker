@@ -11,6 +11,7 @@ function Expenses() {
   const navigate = useNavigate();
   const { state, dispatch } = useExpense();
   const [data, setData] = useState(state);
+
   useEffect(() => {
     setData(state);
   }, [state]);
@@ -38,14 +39,14 @@ function Expenses() {
 
   const handleAmountAscending = () => {
     const sortedData = data.sort(function (a, b) {
-      return a.amount - b.amount;
+      return a.expenseAmount - b.expenseAmount;
     });
 
     setData([...sortedData]);
   };
   const handleAmountDescending = () => {
     const sortedData = data.sort(function (a, b) {
-      return b.amount - a.amount;
+      return b.expenseAmount - a.expenseAmount;
     });
 
     setData([...sortedData]);
