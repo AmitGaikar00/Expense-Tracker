@@ -1,18 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import Expenses from "./Expenses";
 import ExpensesSkeleton from "./ExpensesSkeleton";
 import { useExpense } from "../context/ContextProvider";
+import { getAllExpenses } from "../Services/requests";
 
 function Home() {
   const navigate = useNavigate();
-  const { state } = useExpense();
+  const { state, dispatch } = useExpense();
+
+  function fetchExpenses() {
+    getAllExpenses().then((result) => {
+      const data = result.config.data === undefined ? [] : result.config.data;
+      console.log("expense list ", data, result);
+
+      dispatch({
+        type: "SET_EXPENSES",
+        payload: data,
+      });
+    });
+  }
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       navigate("/login");
+    }
+    if (user) {
+      fetchExpenses();
     }
   }, []);
 

@@ -11,7 +11,7 @@ function Expenses() {
   const navigate = useNavigate();
   const { state, dispatch } = useExpense();
   const [data, setData] = useState(state);
-  // console.log(state);
+  console.log(data);
 
   useEffect(() => {
     setData(state);
@@ -89,39 +89,40 @@ function Expenses() {
           </tr>
         </thead>
 
-        {data.map((expense, index) => (
-          <tbody key={expense?.id}>
-            <tr className="border-b ">
-              <td className="whitespace-nowrap px-4 py-4 font-medium hover:bg-gray-100">
-                {index + 1}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
-                {expense?.name}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
-                {expense?.category}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4 font-bold hover:bg-gray-100">
-                {expense?.amount}
-              </td>
-              <td className=" px-6 py-4 hover:bg-gray-100">
-                {expense?.createdAt}
-              </td>
-              <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
-                <div className="flex gap-5 ">
-                  <AiOutlineDelete
-                    onClick={() => handleDelete(expense)}
-                    className="text-xl text-primary hover:text-black cursor-pointer"
-                  />
-                  <BsPencil
-                    onClick={() => handleView(expense)}
-                    className="text-xl text-black hover:text-primary cursor-pointer"
-                  />
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        ))}
+        {data.length !== 0 &&
+          data?.map((expense, index) => (
+            <tbody key={expense?.id}>
+              <tr className="border-b ">
+                <td className="whitespace-nowrap px-4 py-4 font-medium hover:bg-gray-100">
+                  {index + 1}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
+                  {expense?.name}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
+                  {expense?.category}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 font-bold hover:bg-gray-100">
+                  {expense?.amount}
+                </td>
+                <td className=" px-6 py-4 hover:bg-gray-100">
+                  {expense?.createdAt}
+                </td>
+                <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
+                  <div className="flex gap-5 ">
+                    <AiOutlineDelete
+                      onClick={() => handleDelete(expense)}
+                      className="text-xl text-primary hover:text-black cursor-pointer"
+                    />
+                    <BsPencil
+                      onClick={() => handleView(expense)}
+                      className="text-xl text-black hover:text-primary cursor-pointer"
+                    />
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          ))}
       </table>
     </section>
   );
