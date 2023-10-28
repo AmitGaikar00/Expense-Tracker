@@ -11,7 +11,11 @@ Tracker for creating and tracking daily life expenses.
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Sign up](/Images/Signup.png)
+![Log in](/Images/Login%20.png)
+![Home](/Images/Home.png)
+![Add Expense](/Images/Add.png)
+![Update Expense](/Images/Update.png)
 
 
 ## Deploy Link
@@ -47,6 +51,7 @@ Backend -
 - Login / Logout functionality 
 - loading state
 - mobile friendly 
+- Scalability with Context Api and Reducer 
 
 
 
