@@ -1,32 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { BsPlusCircleFill } from "react-icons/bs";
 import Expenses from "./Expenses";
 import ExpensesSkeleton from "./ExpensesSkeleton";
-import { getAllExpenses } from "../Services/requests";
+import { useExpense } from "../context/ContextProvider";
 
 function Home() {
   const navigate = useNavigate();
-  const [list, setList] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  function fetchExpenses() {
-    // setLoading(true);
-    console.log("fetchExpenses run");
-    const response = getAllExpenses();
-    response.then((result) => {
-      setList([...result]);
-      setLoading(false);
-    });
-  }
+  const { state } = useExpense();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (!user) {
       navigate("/login");
     }
-    fetchExpenses();
-  }, [navigate]);
+  }, []);
 
   function handleClick(e) {
     e.preventDefault();
@@ -46,7 +34,11 @@ function Home() {
       </h1>
 
       {/* // expnese section  */}
-      {loading ? <ExpensesSkeleton /> : <Expenses key="key" list={list} />}
+      {state.size() === 0 ? (
+        <ExpensesSkeleton />
+      ) : (
+        <Expenses key="key" list={state} />
+      )}
 
       {/* <ExpenseCard /> */}
     </section>

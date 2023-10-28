@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useExpense } from "../context/ContextProvider";
 import { createExpense } from "../Services/requests";
 
 function AddExpense() {
+  const { dispatch } = useExpense();
   const navigate = useNavigate();
   const [data, setExpenseData] = useState({
     name: "",
@@ -17,11 +19,16 @@ function AddExpense() {
   };
 
   function handleSubmit(e) {
-    // e.preventDefault();
-    const response = createExpense(data);
-    console.log(response);
-    navigate("/" , {replace:true });
-    toast.success("Expense has been added");
+    e.preventDefault();
+
+    createExpense(data).then((result) => {
+      dispatch({
+        type: "ADD_EXPENSE",
+        payload: result,
+      });
+      navigate("/");
+      toast.success("Expense has been added");
+    });
   }
 
   return (

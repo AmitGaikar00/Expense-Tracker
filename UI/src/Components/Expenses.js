@@ -1,33 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaSortAlphaUp, FaSortAlphaDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { deleteExpense } from "../Services/requests";
 import toast from "react-hot-toast";
 import { BsPencil } from "react-icons/bs";
 import { AiOutlineDelete } from "react-icons/ai";
+import { useExpense } from "../context/ContextProvider";
+import { deleteExpense } from "../Services/requests";
 
 function Expenses({ list }) {
+  const { state, dispatch } = useExpense();
+
+  useEffect(() => {
+    setData(state);
+  }, [state]);
+
   const [data, setData] = useState(list);
   const navigate = useNavigate();
 
   function handleDelete(expense) {
     console.log("delete :", expense);
-    const id = expense?._id;
 
-    try {
-      const response = deleteExpense(id);
-      response.then(() => {
-        navigate("/"  , {replace:true });
+    deleteExpense(expense?.id).then(() => {
+      dispatch({
+        type: "DELETE_EXPENSE",
+        payload: expense,
       });
-
       toast.success("Expense deleted successfully");
-    } catch (error) {
-      toast.error(error.message);
-      console.log(error);
-    }
+    });
   }
   function handleView(expense) {
-    const id = expense?._id;
+    const id = expense?.id;
     console.log("view:", id);
     navigate(`/expense/${id}`);
   }
@@ -84,7 +86,7 @@ function Expenses({ list }) {
         </thead>
 
         {data.map((expense, index) => (
-          <tbody key={expense?._id}>
+          <tbody key={expense?.id}>
             <tr className="border-b ">
               <td className="whitespace-nowrap px-4 py-4 font-medium hover:bg-gray-100">
                 {index + 1}
@@ -103,12 +105,14 @@ function Expenses({ list }) {
               </td>
               <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
                 <div className="flex gap-5 ">
-                  <button className="" onClick={() => handleDelete(expense)}>
-                    <AiOutlineDelete className="text-xl text-primary hover:text-black cursor-pointer" />
-                  </button>
-                  <button onClick={() => handleView(expense)}>
-                    <BsPencil className="text-xl text-black hover:text-primary cursor-pointer" />
-                  </button>
+                  <AiOutlineDelete
+                    onClick={() => handleDelete(expense)}
+                    className="text-xl text-primary hover:text-black cursor-pointer"
+                  />
+                  <BsPencil
+                    onClick={() => handleView(expense)}
+                    className="text-xl text-black hover:text-primary cursor-pointer"
+                  />
                 </div>
               </td>
             </tr>

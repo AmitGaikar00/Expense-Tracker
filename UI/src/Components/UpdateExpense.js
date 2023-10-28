@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateExpense, getExpense } from "../Services/requests";
 import toast from "react-hot-toast";
+import { useExpense } from "../context/ContextProvider";
+import { updateExpense } from "../Services/requests";
 
 function AddExpense() {
   const navigate = useNavigate();
+  const { state, dispatch } = useExpense();
 
   function handleOK(e) {
     e.preventDefault();
@@ -12,43 +14,28 @@ function AddExpense() {
   }
   function handleUpdate(e) {
     e.preventDefault();
-    const response = updateExpense({ ...data, id: expenseId });
-    console.log(response);
-    navigate("/");
-    toast.success("Expense has been updated");
+
+    updateExpense({ ...data, id: expenseId }).then(() => {
+      dispatch({
+        type: "UPDATE_EXPENSE",
+        payload: data,
+      });
+
+      navigate("/");
+      toast.success("Expense has been updated");
+    });
   }
 
-  const [data, setExpenseData] = useState({
-    _id: "",
-    name: "",
-    category: "",
-    amount: "",
-    createdAt: "",
-    updatedAt: "",
-    __v: 0,
-  });
+  const { expenseId } = useParams();
+  const [data, setExpenseData] = useState(
+    state.find((e) => e._id === expenseId)
+  );
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setExpenseData({ ...data, [id]: value });
   };
 
-  const { expenseId } = useParams();
-
-  useEffect(() => {
-    try {
-      const response = getExpense(expenseId);
-      // console.log(response);
-      response.then((result) => {
-        console.log(result);
-        setExpenseData({ ...result });
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, [expenseId]);
-
-  //   console.log(expenseId);
   return (
     <section className="container mx-auto px-5 py-10">
       <div className="w-full mx-auto max-w-sm">
