@@ -2,12 +2,13 @@ import axios from "axios";
 import { axiosRequest } from "./user";
 
 const token = JSON.parse(localStorage.getItem("user")) || "";
-const header = `Authorization: Bearer_${token ? token.data.jwtToken : ""}`;
 
 export const getAllExpenses = async () => {
   try {
-    const data = await axiosRequest.get("/api/expense/all-expenses", {
-      headers: header,
+    const { data } = await axios.get("/api/expense/all-expenses", {
+      headers: {
+        Authorization: `Bearer_${token.data.jwtToken}`,
+      },
     });
     return data;
   } catch (error) {
@@ -38,13 +39,11 @@ export const createExpense = async ({ name, category, amount }) => {
   };
 
   try {
-    const { data } = await axiosRequest.post(
-      "/api/expense/add",
-      {
-        headers: header,
+    const { data } = await axios.post("/api/expense/add", createData, {
+      headers: {
+        Authorization: `Bearer_${token.data.jwtToken}`,
       },
-      createData
-    );
+    });
     return data;
   } catch (error) {
     return error;
@@ -66,7 +65,11 @@ export const updateExpense = async ({ name, category, amount, id }) => {
 
 export const deleteExpense = async (id) => {
   try {
-    const { data } = await axiosRequest.delete(`/api/expenses/${id}`);
+    const { data } = await axios.delete(`/api/expense/${id}`, {
+      headers: {
+        Authorization: `Bearer_${token.data.jwtToken}`,
+      },
+    });
     return data;
   } catch (error) {
     return error;

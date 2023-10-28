@@ -22,13 +22,13 @@ function AddExpense() {
     e.preventDefault();
 
     createExpense(data).then((result) => {
-      // dispatch({
-      //   type: "ADD_EXPENSE",
-      //   payload: result,
-      // });
-      // navigate("/");
-      // toast.success("Expense has been added");
-      console.log(result)
+      dispatch({
+        type: "ADD_EXPENSE",
+        payload: result,
+      });
+      navigate("/");
+      toast.success("Expense has been added");
+      console.log(result);
     });
   }
 

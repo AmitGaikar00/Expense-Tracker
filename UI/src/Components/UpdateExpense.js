@@ -29,11 +29,11 @@ function AddExpense() {
 
   const { expenseId } = useParams();
   const [data, setExpenseData] = useState(
-    state.find((e) => e._id === expenseId)
+    state.find((e) => e.id === expenseId)
   );
 
   useEffect(() => {
-    setExpenseData(state.find((e) => e._id === expenseId));
+    setExpenseData(state.find((e) => e.id === expenseId));
   }, [expenseId , state]);
 
   const handleChange = (e) => {

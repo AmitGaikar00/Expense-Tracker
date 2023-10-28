@@ -10,15 +10,15 @@ import { getAllExpenses } from "../Services/requests";
 function Home() {
   const navigate = useNavigate();
   const { state, dispatch } = useExpense();
-
   function fetchExpenses() {
     getAllExpenses().then((result) => {
-      const data = result.config.data === undefined ? [] : result.config.data;
-      console.log("expense list ", data, result);
+      // const data = result.config.data === undefined ? [] : result.config.data;
+
+      // console.log("expense list ", data, result);
 
       dispatch({
         type: "SET_EXPENSES",
-        payload: data,
+        payload: result,
       });
     });
   }

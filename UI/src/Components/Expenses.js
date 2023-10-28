@@ -11,15 +11,13 @@ function Expenses() {
   const navigate = useNavigate();
   const { state, dispatch } = useExpense();
   const [data, setData] = useState(state);
-  console.log(data);
-
   useEffect(() => {
     setData(state);
   }, [state]);
 
   function handleDelete(expense) {
     console.log("delete :", expense);
-    const id = expense._id;
+    const id = expense.id;
 
     const response = deleteExpense(id);
 
@@ -33,7 +31,7 @@ function Expenses() {
     });
   }
   function handleView(expense) {
-    const id = expense?._id;
+    const id = expense?.id;
     console.log("view:", id);
     navigate(`/expense/${id}`);
   }
@@ -91,19 +89,19 @@ function Expenses() {
 
         {data.length !== 0 &&
           data?.map((expense, index) => (
-            <tbody key={expense?.id}>
+            <tbody key={index}>
               <tr className="border-b ">
                 <td className="whitespace-nowrap px-4 py-4 font-medium hover:bg-gray-100">
                   {index + 1}
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
-                  {expense?.name}
+                  {expense?.expenseName}
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 hover:bg-gray-100">
-                  {expense?.category}
+                  {expense?.expenseCategory}
                 </td>
                 <td className="whitespace-nowrap px-6 py-4 font-bold hover:bg-gray-100">
-                  {expense?.amount}
+                  {expense?.expenseAmount}
                 </td>
                 <td className=" px-6 py-4 hover:bg-gray-100">
                   {expense?.createdAt}
